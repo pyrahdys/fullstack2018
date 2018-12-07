@@ -28,21 +28,90 @@ class App extends React.Component {
             <div>
                 <div>
                     <h1>anna palautetta</h1>
-                    <button onClick={this.klikHyvä}>hyvä</button>
-                    <button onClick={this.klikNeutraali}>neutraali</button>
-                    <button onClick={this.klikHuono}>huono</button>
+                    <Button 
+                        handleClick={this.klikHyvä}
+                        text="hyvä"
+                    />
+                    <Button 
+                        handleClick={this.klikNeutraali}
+                        text="neutraali"
+                    />
+                    <Button 
+                        handleClick={this.klikHuono}
+                        text="huono"
+                    />
                 </div>
                 <div>
                 <h1>statistiikka</h1>
-                    <p>hyvä {this.state.hyvä}</p>
-                    <p>neutraali {this.state.neutraali}</p>
-                    <p>huono {this.state.huono}</p>
-                    <p>keskiarvo {Math.round(((this.state.hyvä - this.state.huono) / (this.state.hyvä + this.state.neutraali + this.state.huono)) * 10) / 10 }</p>
-                    <p>positiivisia {Math.round((this.state.hyvä / (this.state.hyvä + this.state.neutraali + this.state.huono)) * 1000) / 10} %</p>
+                    <Statistics
+                        hyvä={this.state.hyvä}
+                        neutraali={this.state.neutraali}
+                        huono={this.state.huono}
+                    />
                 </div>
             </div>
         )
     }
+}
+
+const Statistics = ({ hyvä, neutraali, huono }) => {
+            
+    return (
+        <div>
+            <Statistic 
+                value={hyvä}
+                text="hyvä"
+            />
+
+            <Statistic 
+                value={neutraali}
+                text="neutraali"
+            />
+
+            <Statistic 
+                value={huono}
+                text="huono"
+            />
+
+            <Statistic 
+                value={keskiarvo({hyvä}, {neutraali}, {huono})}
+                text="keskiarvo"
+            />
+
+            <Statistic 
+                value={positiivisia({hyvä}, {neutraali}, {huono})}
+                text="positiivisia"
+            />
+        </div>
+    )
+}
+
+const keskiarvo = ({hyvä}, {neutraali}, {huono}) => {
+    if (hyvä + neutraali + huono === 0) {
+        return 0
+    }
+    
+    return Math.round(((hyvä - huono) / (hyvä + neutraali + huono)) * 10) / 10
+}
+
+const positiivisia = ({hyvä}, {neutraali}, {huono}) => {
+    if (hyvä + neutraali + huono === 0) {
+        return 0 + " %"
+    }
+    
+    return Math.round((hyvä / (hyvä + neutraali + huono)) * 1000) / 10 + " %"
+}
+
+const Button = ({handleClick, text}) => (
+    <button onClick={handleClick}>
+        {text}
+    </button>
+)
+
+const Statistic = ({value, text}) => {
+    return (
+        <p>{text} {value}</p>
+    )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

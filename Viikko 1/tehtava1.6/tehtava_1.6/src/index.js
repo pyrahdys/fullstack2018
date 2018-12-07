@@ -55,7 +55,9 @@ class App extends React.Component {
 }
 
 const Statistics = ({ hyvä, neutraali, huono }) => {
-            
+    if (hyvä + neutraali + huono === 0) {
+        return <p>ei yhtään palautetta annettu</p>
+    }
     return (
         <div>
             <Statistic 
@@ -98,7 +100,7 @@ const positiivisia = ({hyvä}, {neutraali}, {huono}) => {
     if (hyvä + neutraali + huono === 0) {
         return 0 + " %"
     }
-    
+
     return Math.round((hyvä / (hyvä + neutraali + huono)) * 1000) / 10 + " %"
 }
 

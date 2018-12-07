@@ -60,30 +60,38 @@ const Statistics = ({ hyvä, neutraali, huono }) => {
     }
     return (
         <div>
-            <Statistic 
-                value={hyvä}
-                text="hyvä"
-            />
+            <table>
+                <tbody>
+                <Statistic 
+                    value={hyvä}
+                    text="hyvä"
+                />
 
-            <Statistic 
-                value={neutraali}
-                text="neutraali"
-            />
+                <Statistic 
+                    value={neutraali}
+                    text="neutraali"
+                />
 
-            <Statistic 
-                value={huono}
-                text="huono"
-            />
+                <Statistic 
+                    value={huono}
+                    text="huono"
+                />
 
-            <Statistic 
-                value={keskiarvo({hyvä}, {neutraali}, {huono})}
-                text="keskiarvo"
-            />
+                <Statistic 
+                    value={keskiarvo({hyvä}, {neutraali}, {huono})}
+                    text="keskiarvo"
+                />
 
-            <Statistic 
-                value={positiivisia({hyvä}, {neutraali}, {huono})}
-                text="positiivisia"
-            />
+                <Statistic 
+                    value={positiivisia({hyvä}, {neutraali}, {huono})}
+                    text="positiivisia"
+                />
+
+                </tbody>
+            </table>
+
+
+            
         </div>
     )
 }
@@ -112,7 +120,10 @@ const Button = ({handleClick, text}) => (
 
 const Statistic = ({value, text}) => {
     return (
-        <p>{text} {value}</p>
+        <tr>
+            <td>{text}</td>
+            <td>{value}</td>
+        </tr>
     )
 }
 

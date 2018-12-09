@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Person = ({person}) => {
+const Person = ({person, removeName}) => {
     console.log(person.name)
     return (
         <tr>
@@ -9,6 +9,9 @@ const Person = ({person}) => {
             </td>
             <td>
                 {person.number}
+            </td>
+            <td>
+                <button onClick={removeName}>Poista</button>
             </td>
         </tr>
     )

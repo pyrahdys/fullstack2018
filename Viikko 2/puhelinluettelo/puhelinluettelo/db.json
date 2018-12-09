@@ -19,6 +19,36 @@
       "name": "Lea Kutvonen",
       "number": "040-123456",
       "id": 4
+    },
+    {
+      "name": "Herra Huu",
+      "number": "040-123456",
+      "id": 5
+    },
+    {
+      "name": "Lordi Kuu",
+      "number": "054-123456",
+      "id": 6
+    },
+    {
+      "name": "Simasuu",
+      "number": "040-123456",
+      "id": 7
+    },
+    {
+      "name": "Kukkurukuu",
+      "number": "045-123456",
+      "id": 8
+    },
+    {
+      "name": "Luupiluu",
+      "number": "040-123456",
+      "id": 9
+    },
+    {
+      "name": "Guu",
+      "number": "040-123456",
+      "id": 10
     }
   ]
 }

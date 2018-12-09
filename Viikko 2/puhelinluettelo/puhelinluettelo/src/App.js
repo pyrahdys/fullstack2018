@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios'
 import Person from './components/Person'
+import personservice from './services/persons'
 
 class App extends React.Component {
     constructor(props) {
@@ -14,12 +14,10 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        console.log('did mount')
-        axios
-            .get('http://localhost:3001/persons')
+        personservice
+            .getAll()
             .then(response => {
-                console.log('promise fulfilled')
-                this.setState({persons: response.data})
+                this.setState({persons: response})
             })
     }
 
@@ -37,12 +35,15 @@ class App extends React.Component {
             name: this.state.newName,
             number: this.state.newNumber
         }
-        const pers = this.state.persons.concat(personObject)
 
-        this.setState({
-            persons: pers,
-            newName: ''
-        })
+        personservice
+            .create(personObject)
+            .then(newPerson => {
+                this.setState({
+                    persons: this.state.persons.concat(newPerson),
+                    newPerson: ''
+                })
+            })
     }
 
     handleNameChange = (event) => {
@@ -51,15 +52,29 @@ class App extends React.Component {
     }
 
     handleNumberChange = (event) => {
-        this.setState({newNumber: event.target.value})
+        this.setState({newNumber: event.target.value.name})
         console.log(this.state.newNumber)
     }
 
-    render() {
-        const yhteystiedot = this.state.persons.map(person => <Person key={person.name} person={person}/>)
-        
-        console.log('render')
+    removeNameOf = (name) => {
+        return () => {
+            if (!window.confirm("Poistetaanko " + name)) { 
+                console.log("Ei poistettu")
+                return
+            }
 
+            const person = this.state.persons.find(p => p.name === name)
+            
+            personservice
+                .remove(person.id)
+                
+                .then(response => {
+                    this.setState({persons: this.state.persons.filter(p => p.name !== name)})
+                })
+        }
+    }
+
+    render() {
         return (
             <div>
                 <h2>Puhelinluettelo</h2>
@@ -79,15 +94,16 @@ class App extends React.Component {
                     <div>
                         <button type="submit" onClick={this.addName}>lisää</button>
                     </div>
-                    <div>
-                        debug: {this.state.newName}
-                    </div>
                 </form>
                 <h2>Numerot</h2>
                 <div>
                     <table>
                         <tbody>
-                            {yhteystiedot}
+                        {this.state.persons.map(person => 
+                            <Person 
+                                key={person.name} 
+                                person={person} 
+                                removeName={this.removeNameOf(person.name)}/>)}
                         </tbody>
                     </table>
                 </div>

@@ -8,7 +8,8 @@ class App extends React.Component {
         this.state = {
             persons: [],
             newName: '',
-            newNumber: ''
+            newNumber: '',
+            notification: null
         }
         console.log('constructor')
     }
@@ -34,6 +35,7 @@ class App extends React.Component {
         const personObject = {
             name: this.state.newName,
             number: this.state.newNumber
+            
         }
 
         personservice
@@ -41,8 +43,12 @@ class App extends React.Component {
             .then(newPerson => {
                 this.setState({
                     persons: this.state.persons.concat(newPerson),
-                    newPerson: ''
+                    newPerson: '',
+                    notification: `lisättiin ${personObject.name}`
                 })
+                setTimeout(() => {
+                    this.setState({notification: null})
+                }, 5000)
             })
     }
 
@@ -52,7 +58,7 @@ class App extends React.Component {
     }
 
     handleNumberChange = (event) => {
-        this.setState({newNumber: event.target.value.name})
+        this.setState({newNumber: event.target.value})
         console.log(this.state.newNumber)
     }
 
@@ -63,20 +69,26 @@ class App extends React.Component {
                 return
             }
 
-            const person = this.state.persons.find(p => p.name === name)
+            const personObject = this.state.persons.find(p => p.name === name)
             
             personservice
-                .remove(person.id)
-                
+                .remove(personObject.id)
                 .then(response => {
-                    this.setState({persons: this.state.persons.filter(p => p.name !== name)})
-                })
+                    this.setState({
+                        persons: this.state.persons.filter(p => p.name !== name),
+                        notification: `poistettiin ${personObject.name}`
+                    })
+                    setTimeout(() => {
+                        this.setState({notification: null})
+                    }, 5000)
+            })
         }
     }
 
     render() {
         return (
             <div>
+                <Notification message={this.state.notification}/>
                 <h2>Puhelinluettelo</h2>
                 <form>
                     <div>
@@ -111,5 +123,16 @@ class App extends React.Component {
         )
     }
 }
+
+const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+    return (
+      <div className="notification">
+        {message}
+      </div>
+    )
+  }
 
 export default App

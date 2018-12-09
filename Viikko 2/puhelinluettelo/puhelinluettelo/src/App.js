@@ -1,16 +1,26 @@
 import React from 'react';
+import axios from 'axios'
 import Person from './components/Person'
 
 class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            persons: [
-                {name: 'Arto Hellas'}
-            ],
+            persons: [],
             newName: '',
             newNumber: ''
         }
+        console.log('constructor')
+    }
+
+    componentDidMount() {
+        console.log('did mount')
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => {
+                console.log('promise fulfilled')
+                this.setState({persons: response.data})
+            })
     }
 
     addName = (event) => {
@@ -46,9 +56,10 @@ class App extends React.Component {
     }
 
     render() {
-        //const yhteystiedot = this.state.persons.map((person) => key=person.name <p>{person.name}</p>)
         const yhteystiedot = this.state.persons.map(person => <Person key={person.name} person={person}/>)
         
+        console.log('render')
+
         return (
             <div>
                 <h2>Puhelinluettelo</h2>
